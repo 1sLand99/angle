@@ -915,6 +915,10 @@ bool TranslatorSPIRV::translateImpl(TIntermBlock *root,
                 if (inputVarying.name == "gl_FragCoord")
                 {
                     usesFragCoord = true;
+                    const TVariable *fragCoord =
+                        static_cast<const TVariable *>(getSymbolTable().findBuiltIn(
+                            ImmutableString("gl_FragCoord"), getShaderVersion()));
+                    assignSpirvId(fragCoord->uniqueId(), vk::spirv::kIdFragCoord);
                     break;
                 }
             }

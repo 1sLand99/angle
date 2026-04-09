@@ -26,7 +26,7 @@
 
 // Version number for shader translation API.
 // It is incremented every time the API changes.
-#define ANGLE_SH_VERSION 409
+#define ANGLE_SH_VERSION 410
 
 enum ShShaderSpec
 {
@@ -1065,6 +1065,7 @@ constexpr uint32_t kNonSemanticInstructionMask       = 0xF;
 constexpr uint32_t kOverviewHasSampleRateShadingMask = 0x10;
 constexpr uint32_t kOverviewHasSampleIDMask          = 0x20;
 constexpr uint32_t kOverviewHasOutputPerVertexMask   = 0x40;
+constexpr uint32_t kOverviewHasFragCoordMask         = 0x80;
 
 enum ReservedIds
 {
@@ -1076,6 +1077,7 @@ enum ReservedIds
 
     // Global information
     kIdNonSemanticInstructionSet,
+    kIdGlslStdInstructionSet,
     kIdEntryPoint,
 
     // Basic types
@@ -1088,6 +1090,7 @@ enum ReservedIds
     kIdMat3,
     kIdMat4,
     kIdInt,
+    kIdIVec2,
     kIdIVec4,
     kIdUint,
 
@@ -1096,10 +1099,18 @@ enum ReservedIds
     kIdIntOne,
     kIdIntTwo,
     kIdIntThree,
+    kIdIntFour,
+    kIdIntFive,
+    kIdIntSix,
+    kIdIntSeven,
+
+    kIdFloatTwo,
 
     // Type pointers
     kIdIntInputTypePointer,
+    kIdVec4InputTypePointer,
     kIdVec4OutputTypePointer,
+    kIdVec3OutputTypePointer,
     kIdIVec4FunctionTypePointer,
     kIdOutputPerVertexTypePointer,
 
@@ -1119,6 +1130,9 @@ enum ReservedIds
 
     // Multisampling support
     kIdSampleID,
+
+    // Dithering emulation
+    kIdFragCoord,
 
     // =============================================================================================
     // ANGLE internal shader variables, which are not produced as ShaderVariables.

@@ -776,11 +776,9 @@ struct GraphicsPipelineShadersVulkanStructs
     VkPipelineRasterizationLineStateCreateInfoEXT rasterLineState                 = {};
     VkPipelineRasterizationProvokingVertexStateCreateInfoEXT provokingVertexState = {};
     VkPipelineRasterizationStateStreamCreateInfoEXT rasterStreamState             = {};
-    VkSpecializationInfo specializationInfo                                       = {};
 
     // Support storage
     angle::FixedVector<VkPipelineShaderStageCreateInfo, 5> shaderStages;
-    SpecializationConstantMap<VkSpecializationMapEntry> specializationEntries;
 };
 
 struct GraphicsPipelineSharedNonVertexInputVulkanStructs
@@ -878,10 +876,7 @@ class PipelineHelper;
 struct GraphicsPipelineShadersInfo final
 {
   public:
-    GraphicsPipelineShadersInfo(const ShaderModuleMap *shaders,
-                                const SpecializationConstants *specConsts)
-        : mShaders(shaders), mSpecConsts(specConsts)
-    {}
+    GraphicsPipelineShadersInfo(const ShaderModuleMap *shaders) : mShaders(shaders) {}
     GraphicsPipelineShadersInfo(vk::PipelineHelper *pipelineLibrary)
         : mPipelineLibrary(pipelineLibrary)
     {}
@@ -892,7 +887,6 @@ struct GraphicsPipelineShadersInfo final
   private:
     // If the shaders state should be directly specified in the final pipeline.
     const ShaderModuleMap *mShaders            = nullptr;
-    const SpecializationConstants *mSpecConsts = nullptr;
 
     // If the shaders state is provided via a pipeline library.
     vk::PipelineHelper *mPipelineLibrary = nullptr;
@@ -1156,7 +1150,6 @@ class GraphicsPipelineDesc final
     void initializePipelineShadersState(
         ErrorContext *context,
         const ShaderModuleMap &shaders,
-        const SpecializationConstants &specConsts,
         GraphicsPipelineShadersVulkanStructs *stateOut,
         GraphicsPipelineDynamicStateList *dynamicStateListOut) const;
 
@@ -1546,7 +1539,6 @@ class CreateMonolithicPipelineTask : public ErrorContext, public angle::Closure
                                  const PipelineCacheAccess &pipelineCache,
                                  const PipelineLayout &pipelineLayout,
                                  const ShaderModuleMap &shaders,
-                                 const SpecializationConstants &specConsts,
                                  const GraphicsPipelineDesc &desc);
 
     // The compatible render pass is set only when the task is ready to run.  This is because the
@@ -1575,7 +1567,6 @@ class CreateMonolithicPipelineTask : public ErrorContext, public angle::Closure
     const RenderPass *mCompatibleRenderPass;
     const PipelineLayout &mPipelineLayout;
     const ShaderModuleMap &mShaders;
-    SpecializationConstants mSpecConsts;
     GraphicsPipelineDesc mDesc;
 
     // Results
