@@ -26,7 +26,7 @@
 
 // Version number for shader translation API.
 // It is incremented every time the API changes.
-#define ANGLE_SH_VERSION 410
+#define ANGLE_SH_VERSION 411
 
 enum ShShaderSpec
 {
@@ -403,12 +403,11 @@ struct ShCompileOptions
     // Always write explicit location layout qualifiers for fragment outputs.
     uint64_t explicitFragmentLocations : 1;
 
-    // Dithering is emulated by injecting code in the fragment shader
-    uint64_t emulateDithering : 1;
+    // placeholder bit for removed emulateDithering option.
+    uint64_t unused : 1;
 
-    // Add round() after applying dither.  This works around a Qualcomm quirk where values can get
-    // ceil()ed instead.
-    uint64_t roundOutputAfterDithering : 1;
+    // placeholder bit for removed roundOutputAfterDithering option.
+    uint64_t unused2 : 1;
 
     // Whether |#extension ... : disable| is allowed after non-preprocessor tokens in WebGL.
     // WebGL1 deviates from GLSL by allowing |#extension| directives after non-preprocessor tokens.
@@ -904,9 +903,6 @@ int GetVertexShaderNumViews(const ShHandle handle);
 // not one.
 const std::vector<ShPixelLocalStorageLayout> *GetPixelLocalStorageLayouts(const ShHandle handle);
 
-// Returns specialization constant usage bits
-uint32_t GetShaderSpecConstUsageBits(const ShHandle handle);
-
 // Returns true if the passed in variables pack in maxVectors followingthe packing rules from the
 // GLSL 1.017 spec, Appendix A, section 7.
 // Returns false otherwise. Also look at the enforcePackingRestrictions flag above.
@@ -1012,26 +1008,9 @@ enum class MetadataFlags
 namespace vk
 {
 
-// Specialization constant ids
-enum class SpecializationConstantId : uint32_t
-{
-    Dither = 0,
-
-    InvalidEnum = 1,
-    EnumCount   = InvalidEnum,
-};
-
-enum class SpecConstUsage : uint32_t
-{
-    Dither = 0,
-
-    InvalidEnum = 1,
-    EnumCount   = InvalidEnum,
-};
-
 enum ColorAttachmentDitherControl
 {
-    // See comments in ContextVk::updateDither and EmulateDithering.cpp
+    // See comments in ContextVk::updateDither
     kDitherControlNoDither   = 0,
     kDitherControlDither4444 = 1,
     kDitherControlDither5551 = 2,
