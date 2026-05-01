@@ -19306,6 +19306,44 @@ void main() {
     swapBuffers();
 }
 
+// Call glGenerateMipmap multiple times with different formats. Covers issues with texture
+// redefinition.
+TEST_P(Texture2DTestES3, MultipleGenerateMipmapCalls)
+{
+    GLTexture tex;
+    glBindTexture(GL_TEXTURE_2D, tex);
+
+    // Full mip chain of GL_RGB
+    const GLsizei originalW = 128, originalH = 128;
+    glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, originalW, originalH, 0, GL_RGB, GL_UNSIGNED_BYTE,
+                 nullptr);
+    glGenerateMipmap(GL_TEXTURE_2D);
+    ASSERT_GL_NO_ERROR();
+
+    // Full mip chain of R8
+    const GLsizei redefineW = 64, redefineH = 64;
+    glTexImage2D(GL_TEXTURE_2D, 0, GL_R8, redefineW, redefineH, 0, GL_RED, GL_UNSIGNED_BYTE,
+                 nullptr);
+    glGenerateMipmap(GL_TEXTURE_2D);
+    ASSERT_GL_NO_ERROR();
+
+    // Update mip 1 which should be R8
+    const GLsizei w = redefineW / 2;
+    const GLsizei h = redefineH / 2;
+    std::vector<GLubyte> data(w * h, 0xFF);
+    glTexSubImage2D(GL_TEXTURE_2D, 1, 0, 0, w, h, GL_RED, GL_UNSIGNED_BYTE, data.data());
+    ASSERT_GL_NO_ERROR();
+
+    // Verify data in mip 1
+    GLFramebuffer fbo;
+    glBindFramebuffer(GL_FRAMEBUFFER, fbo);
+    glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, tex, 1);
+    EXPECT_GL_FRAMEBUFFER_COMPLETE(GL_FRAMEBUFFER);
+
+    EXPECT_PIXEL_RECT_EQ(0, 0, w, h, GLColor::red);
+    ASSERT_GL_NO_ERROR();
+}
+
 // Verify that image uniforms can link in separable programs
 TEST_P(TextureTestES31, LinkedImageUniforms)
 {
