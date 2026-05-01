@@ -633,17 +633,6 @@ deps = {
       'dep_type': 'cipd',
   },
 
-  'third_party/android_build_tools/art': {
-      'packages': [
-          {
-              'package': 'chromium/third_party/android_build_tools/art',
-              'version': '87169fbc701d244c311e6aa8843591a7f1710bc0',
-          },
-      ],
-      'condition': 'checkout_android and not build_with_chromium',
-      'dep_type': 'cipd',
-  },
-
   'third_party/android_build_tools/error_prone/cipd': {
       'packages': [
           {
@@ -766,17 +755,6 @@ deps = {
   'third_party/astc-encoder/src': {
     'url': Var('chromium_git') + '/external/github.com/ARM-software/astc-encoder@2319d9c4d4af53a7fc7c52985e264ce6e8a02a9b',
     'condition': 'not build_with_chromium',
-  },
-
-  'third_party/bazel': {
-      'packages': [
-          {
-              'package': 'chromium/third_party/bazel',
-              'version': 'VjMsf48QUWw8n7XtJP2AuSjIGmbQeYdWdwyxVvIRLmAC',
-          },
-      ],
-      'condition': 'checkout_android and not build_with_chromium',
-      'dep_type': 'cipd',
   },
 
   'third_party/catapult': {
@@ -988,17 +966,6 @@ deps = {
   'third_party/partition_alloc': {
     'url': Var('chromium_git') + '/chromium/src/base/allocator/partition_allocator.git@b5258e200dc8fc3ea0a3c02730258fda7633a9e4',
     'condition': 'not build_with_chromium and checkout_angle_partition_alloc',
-  },
-
-  'third_party/proguard': {
-      'packages': [
-          {
-              'package': 'chromium/third_party/proguard',
-              'version': 'Fd91BJFVlmiO6c46YMTsdy7n2f5Sk2hVVGlzPLvqZPsC',
-          },
-      ],
-      'condition': 'checkout_android and not build_with_chromium',
-      'dep_type': 'cipd',
   },
 
   'third_party/protobuf': {
