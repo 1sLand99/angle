@@ -12819,7 +12819,7 @@ ImageOrBufferViewSubresourceSerial ImageViewHelper::getSubresourceSerialForColor
 {
     ASSERT(mImageViewSerial.valid());
 
-    ImageOrBufferViewSubresourceSerial serial;
+    ImageOrBufferViewSubresourceSerial serial = {};
     serial.viewSerial  = mImageViewSerial;
     serial.subresource = MakeImageSubresourceReadRange(levelGL, levelCount, layer, layerMode,
                                                        readColorspace, mWriteColorspace);
